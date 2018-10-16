@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PopularMovies from "./components/popularMovies";
 import FilterMovies from "./components/filterMovies";
 import Selections from "./components/selections";
-import MovieCard from "./components/movieCard";
+import MovieCardContent from "./components/movieCardContent";
 import NavBar from "./components/navBar";
 import NotFound from "./components/notFound";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -14,7 +14,7 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
         <Switch>
-          <Route path="/:id" component={MovieCard} />
+          <Route path="/:id" component={MovieCardContent} />
           <Route path="/filter" component={FilterMovies} />
           <Route path="/selections" component={Selections} />
           <Route path="/not-found" component={NotFound} />

@@ -21,9 +21,9 @@ const NavBar = () => {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <li className="nav-item active">
+          <li className="nav-item">
             <NavLink className="nav-link" to="/">
-              Popular <span className="sr-only">(current)</span>
+              Popular
             </NavLink>
           </li>
           <li className="nav-item">
