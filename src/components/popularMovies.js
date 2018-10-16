@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 import Pagination from "./pagination";
 import movieData from "../data/popularMovies.json";
 
@@ -31,7 +31,9 @@ class PopularMovies extends Component {
                   />
                   <div className="card-body">
                     <h5 className="card-title">{item.title}</h5>
-                    <a className="btn btn-primary">Details</a>
+                    <Link className="btn btn-primary" to={`/${item.id}`}>
+                      Details
+                    </Link>
                   </div>
                 </div>
               );
