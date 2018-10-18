@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import movieData from "../data/popularMovies.json";
 
 class MovieCardContent extends Component {
   state = {
@@ -14,7 +13,7 @@ class MovieCardContent extends Component {
       }?api_key=340af08aad86d2a893fef0bc25ea615d&language=en-US`
     )
       .then(response => response.json())
-      .then(data => this.setState({ data }, () => console.log(this.state)));
+      .then(data => this.setState({ data }));
   }
 
   render() {

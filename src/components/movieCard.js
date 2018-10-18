@@ -11,7 +11,7 @@ const MovieCard = ({ title, id, posterPath }) => {
       />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
-        <Link className="btn btn-primary" to={`/${id}`}>
+        <Link className="btn btn-primary" to={`/movie/${id}`}>
           Details
         </Link>
       </div>

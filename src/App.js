@@ -14,7 +14,7 @@ class App extends Component {
       <React.Fragment>
         <NavBar />
         <Switch>
-          <Route path="/:id" component={MovieCardContent} />
+          <Route path="/movie/:id" component={MovieCardContent} />
           <Route path="/filter" component={FilterMovies} />
           <Route path="/selections" component={Selections} />
           <Route path="/not-found" component={NotFound} />

@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import Pagination from "./pagination";
-import movieData from "../data/popularMovies.json";
+
 import MovieTable from "./movieTable";
+import { database } from "../services/firebase";
 
 class PopularMovies extends Component {
   state = {
-    data: movieData,
+    data: [],
     currentPage: 1
   };
+
+  componentDidMount() {
+    database.ref().on("value", snapshot => {
+      //snapshot.val().movies.map(item => console.log(item));
+      this.setState({ data: snapshot.val().movies });
+    });
+  }
 
   handlePageClick = page => {
     this.setState({ currentPage: page });

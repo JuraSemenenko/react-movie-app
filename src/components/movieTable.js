@@ -6,7 +6,7 @@ const MovieTable = props => {
   return (
     <div className="container">
       <div className="row">
-        {props.data[props.pageInfo - 1].results.map(item => {
+        {props.data.map(item => {
           return (
             <MovieCard
               key={item.id}
