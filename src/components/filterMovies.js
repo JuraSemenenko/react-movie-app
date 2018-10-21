@@ -9,7 +9,8 @@ class FilterMovies extends Component {
   state = {
     data: [],
     currentPage: 1,
-    value: ""
+    value: "",
+    movieOnPage: 20
   };
   handlePageClick = page => {
     this.setState({ currentPage: page });
@@ -28,7 +29,7 @@ class FilterMovies extends Component {
     const { value, data } = this.state;
 
     const filtredMovie = data.filter(
-      movie => movie.title.indexOf(value) !== -1
+      movie => movie.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
 
     //this.setState({ data: filtredMovie });
@@ -49,11 +50,16 @@ class FilterMovies extends Component {
             />
           </div>
           <div className="col-md-9">
-            <MovieTable data={data} pageInfo={this.state.currentPage} />
+            <MovieTable
+              data={data}
+              pageInfo={this.state.currentPage}
+              movieOnPage={this.state.movieOnPage}
+            />
             <Pagination
-              pageCount={data.length}
+              movieCount={data.length}
               currentPage={this.state.currentPage}
               onClick={this.handlePageClick}
+              movieOnPage={this.state.movieOnPage}
             />
           </div>
         </div>

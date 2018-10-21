@@ -2,7 +2,7 @@ import React from "react";
 
 import { NavLink } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ isAuth }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <NavLink className="navbar-brand" to="/">
@@ -36,11 +36,19 @@ const NavBar = () => {
               Selections
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/login">
-              Login
-            </NavLink>
-          </li>
+          {isAuth ? (
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/login">
+                Login
+              </NavLink>
+            </li>
+          ) : (
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/profile">
+                Profile
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

@@ -7,7 +7,8 @@ import { database } from "../services/firebase";
 class PopularMovies extends Component {
   state = {
     data: [],
-    currentPage: 1
+    currentPage: 1,
+    movieOnPage: 20
   };
 
   componentDidMount() {
@@ -22,16 +23,21 @@ class PopularMovies extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const { data, movieOnPage } = this.state;
     //const imgPath = "https://image.tmdb.org/t/p/w500/";
 
     return (
       <React.Fragment>
-        <MovieTable data={data} pageInfo={this.state.currentPage} />
+        <MovieTable
+          data={data}
+          pageInfo={this.state.currentPage}
+          movieOnPage={movieOnPage}
+        />
         <Pagination
-          pageCount={data.length}
+          movieCount={data.length}
           currentPage={this.state.currentPage}
           onClick={this.handlePageClick}
+          movieOnPage={movieOnPage}
         />
       </React.Fragment>
     );

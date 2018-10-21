@@ -2,8 +2,9 @@ import React from "react";
 
 import _ from "lodash";
 
-const Pagination = ({ pageCount, currentPage, onClick }) => {
-  const pageRange = _.range(1, pageCount + 1);
+const Pagination = ({ movieCount, currentPage, movieOnPage, onClick }) => {
+  const pageCount = Math.ceil(movieCount / movieOnPage);
+  const pageRange = _.range(1, pageCount);
 
   return (
     <nav aria-label="Page navigation example">
