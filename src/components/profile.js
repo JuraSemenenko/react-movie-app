@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { logOut } from "../services/auth";
 class Profile extends Component {
   handleLogout = () => {
-    localStorage.clear();
     this.props.clearLoginData();
     logOut();
   };

@@ -28,17 +28,19 @@ class PopularMovies extends Component {
 
     return (
       <React.Fragment>
-        <MovieTable
-          data={data}
-          pageInfo={this.state.currentPage}
-          movieOnPage={movieOnPage}
-        />
-        <Pagination
-          movieCount={data.length}
-          currentPage={this.state.currentPage}
-          onClick={this.handlePageClick}
-          movieOnPage={movieOnPage}
-        />
+        <div>
+          <MovieTable
+            data={data}
+            pageInfo={this.state.currentPage}
+            movieOnPage={movieOnPage}
+          />
+          <Pagination
+            movieCount={data.length}
+            currentPage={this.state.currentPage}
+            onClick={this.handlePageClick}
+            movieOnPage={movieOnPage}
+          />
+        </div>
       </React.Fragment>
     );
   }

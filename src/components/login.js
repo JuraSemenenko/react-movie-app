@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { logIn } from "../services/auth";
+import { logIn, signIn } from "../services/auth";
 
 class Login extends Component {
   state = {
@@ -10,6 +10,11 @@ class Login extends Component {
   handleLogin = event => {
     event.preventDefault();
     logIn(this.state.email, this.state.password);
+    this.props.history.push("/");
+  };
+  handleSignin = event => {
+    event.preventDefault();
+    signIn(this.state.email, this.state.password);
     this.props.history.push("/");
   };
 
@@ -56,6 +61,13 @@ class Login extends Component {
                 onClick={this.handleLogin}
               >
                 Login
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={this.handleSignin}
+              >
+                Sign In
               </button>
             </form>
           </div>

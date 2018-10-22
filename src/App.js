@@ -25,9 +25,7 @@ class App extends Component {
             email: user.email
           }
         });
-        console.log("User is signed in", user);
       } else {
-        console.log("no user is signed in");
         this.setState({ user: {} });
       }
     });
