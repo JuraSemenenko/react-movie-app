@@ -2,7 +2,8 @@ import React from "react";
 
 import { NavLink } from "react-router-dom";
 
-const NavBar = ({ isAuth }) => {
+const NavBar = ({ isAuth, profileEmail }) => {
+  console.log("navbar auth = ", isAuth);
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <NavLink className="navbar-brand" to="/">
@@ -38,14 +39,14 @@ const NavBar = ({ isAuth }) => {
           </li>
           {isAuth ? (
             <li className="nav-item">
-              <NavLink className="nav-link" to="/login">
-                Login
+              <NavLink className="nav-link" to="/profile">
+                {`Profile ${profileEmail}`}
               </NavLink>
             </li>
           ) : (
             <li className="nav-item">
-              <NavLink className="nav-link" to="/profile">
-                Profile
+              <NavLink className="nav-link" to="/login">
+                Login
               </NavLink>
             </li>
           )}

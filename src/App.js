@@ -9,20 +9,28 @@ import Profile from "./components/profile";
 import Login from "./components/login";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
-
+import firebase from "./services/firebase";
 class App extends Component {
   state = {
     user: { isAuth: false, uid: "" }
   };
 
   componentDidMount() {
-    if (localStorage.getItem("isAuth") && localStorage.getItem("uid")) {
-      const user = {
-        isAuth: localStorage.getItem("isAuth"),
-        uid: localStorage.getItem("uid")
-      };
-      this.setState({ user });
-    }
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+          user: {
+            isAuth: true,
+            uid: user.uid,
+            email: user.email
+          }
+        });
+        console.log("User is signed in", user);
+      } else {
+        console.log("no user is signed in");
+        this.setState({ user: {} });
+      }
+    });
   }
 
   setLoginData = user => {
@@ -33,9 +41,10 @@ class App extends Component {
   };
 
   render() {
+    const { user } = this.state;
     return (
       <React.Fragment>
-        <NavBar isAuth={this.state.user.isAuth} />
+        <NavBar isAuth={user.isAuth} profileEmail={user.email} />
         <Switch>
           <Route path="/movie/:id" component={MovieCardContent} />
           <Route path="/filter" component={FilterMovies} />

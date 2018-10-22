@@ -1,6 +1,6 @@
 import firebase from "./firebase";
 
-export const createUser = function(email, password) {
+export const logIn = function(email, password) {
   if (email && password) {
     firebase
       .auth()
@@ -13,4 +13,14 @@ export const createUser = function(email, password) {
       });
     return firebase.auth().currentUser;
   }
+};
+
+export const logOut = () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(function() {
+      // Sign-out successful.
+      console.log("Sign-out successful.");
+    });
 };

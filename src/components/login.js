@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { createUser } from "../services/auth";
+import { logIn } from "../services/auth";
 
 class Login extends Component {
   state = {
@@ -9,15 +9,8 @@ class Login extends Component {
 
   handleLogin = event => {
     event.preventDefault();
-    const currentUser = createUser(this.state.email, this.state.password);
-    const user = {
-      email: this.state.email,
-      isAuth: true,
-      uid: currentUser.uid
-    };
-    this.props.getUserData(user);
-    localStorage.setItem("isAuth", "true");
-    localStorage.setItem("uid", currentUser.uid);
+    logIn(this.state.email, this.state.password);
+    this.props.history.push("/");
   };
 
   handleInput = event => {
