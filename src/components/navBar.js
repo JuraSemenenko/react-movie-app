@@ -23,17 +23,12 @@ const NavBar = ({ isAuth, profileEmail }) => {
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink className="nav-link" to="/">
-              Popular
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/filter">
-              All Movies
+              Movie Data Base
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" to="selections">
-              Selections
+              Actors
             </NavLink>
           </li>
           {isAuth ? (

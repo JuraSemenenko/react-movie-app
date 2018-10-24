@@ -2,15 +2,11 @@ import React from "react";
 
 import MovieCard from "./movieCard";
 
-const MovieTable = ({ data, pageInfo, movieOnPage }) => {
-  const movieData = data.slice(
-    (pageInfo - 1) * movieOnPage,
-    pageInfo * movieOnPage + movieOnPage
-  );
+const MovieTable = ({ data }) => {
   return (
     <div className="container">
       <div className="row">
-        {movieData.map(item => {
+        {data.map(item => {
           return (
             <MovieCard
               key={item.id}

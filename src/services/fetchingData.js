@@ -79,16 +79,18 @@ export const GENRES = [
   }
 ];
 
-export const fetchData = (query, searchBy) => {
-  if ((searchBy = "byTitle")) {
+export const fetchData = (query, searchBy, page) => {
+  if (searchBy === "byTitle") {
+    console.log("query_fetch", query);
     const FETCH_URL = "https://api.themoviedb.org/3/search/movie?";
-    return fetch(`${FETCH_URL}api_key=${API_KEY}&query=${query}&page=1`).then(
-      response => response.json()
-    );
-  } else if ((searchBy = "byGenres")) {
-    const FETCH_URL = "https://api.themoviedb.org/3/discover/movie?";
     return fetch(
-      `${FETCH_URL}api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=1&with_genres=${query}`
+      `${FETCH_URL}api_key=${API_KEY}&query=${query}&page=${page}`
+    ).then(response => response.json());
+  } else if (searchBy === "byGenres") {
+    const FETCH_URL = "https://api.themoviedb.org/3/discover/movie?";
+    console.log("query_fetch", query);
+    return fetch(
+      `${FETCH_URL}api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=${page}&with_genres=${query}`
     ).then(response => response.json());
   }
 };

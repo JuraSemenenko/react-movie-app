@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import PopularMovies from "./components/popularMovies";
-import FilterMovies from "./components/filterMovies";
-import Selections from "./components/selections";
+import MoviesDB from "./components/moviesDB";
+import ActorsDB from "./components/actorsDB";
 import MovieCardContent from "./components/movieCardContent";
 import NavBar from "./components/navBar";
 import NotFound from "./components/notFound";
@@ -45,8 +44,8 @@ class App extends Component {
         <NavBar isAuth={user.isAuth} profileEmail={user.email} />
         <Switch>
           <Route path="/movie/:id" component={MovieCardContent} />
-          <Route path="/filter" component={FilterMovies} />
-          <Route path="/selections" component={Selections} />
+
+          <Route path="/actors-data-base" component={ActorsDB} />
           <Route path="/not-found" component={NotFound} />
           <Route
             path="/profile"
@@ -60,7 +59,7 @@ class App extends Component {
               <Login getUserData={this.setLoginData} {...props} />
             )}
           />
-          <Route path="/" exact component={PopularMovies} />
+          <Route path="/" exact component={MoviesDB} />
           <Redirect to="/not-found" />
         </Switch>
       </React.Fragment>

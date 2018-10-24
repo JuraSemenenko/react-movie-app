@@ -8,16 +8,24 @@ import { database } from "../services/firebase";
 import { GENRES, fetchData } from "../services/fetchingData";
 import { queryMaker } from "../services/helpers";
 
-class FilterMovies extends Component {
+class MoviesDB extends Component {
   state = {
     data: [],
     currentPage: 1,
+    totalPages: 13,
     value: "",
-    movieOnPage: 20,
-    filter: { genres: {} }
+    filter: { genres: {} },
+    currentFilter: null,
+    currentQuery: ""
   };
   handlePageClick = page => {
-    this.setState({ currentPage: page });
+    const { currentQuery, currentFilter, currentPage } = this.state;
+    fetchData(currentQuery, currentFilter, currentPage).then(fetchingData =>
+      this.setState({
+        data: fetchingData.results,
+        currentPage: page
+      })
+    );
   };
 
   handleInput = e => {
@@ -29,21 +37,33 @@ class FilterMovies extends Component {
     genre[e.target.id] = !genre[e.target.id];
     this.setState({ filter: { genres: genre } });
   };
-
+  // ТуДу Отрефакторить. Обьеденить футкции в одну handleTitleSearch и handleGenresSearch
   handleTitleSearch = () => {
-    const query = this.state.value.toLowerCase();
-    fetchData(query, "byGenres").then(fetchingData =>
-      this.setState({ data: fetchingData.results })
+    const currentQuery = this.state.value.toLowerCase();
+    fetchData(currentQuery, "byTitle").then(fetchingData =>
+      this.setState({
+        data: fetchingData.results,
+        currentFilter: "byTitle",
+        totalPages: fetchingData.total_pages,
+        currentQuery: currentQuery,
+        currentPage: 1
+      })
     );
   };
 
-  handleGenresSearch = e => {
-    e.preventDefault();
+  handleGenresSearch = () => {
     const genres = { ...this.state.filter.genres };
-    const query = queryMaker(genres);
+    const currentQuery = queryMaker(genres);
 
-    fetchData(query, "byGenres").then(fetchingData =>
-      this.setState({ data: fetchingData.results })
+    fetchData(currentQuery, "byGenres", this.state.currentPage).then(
+      fetchingData =>
+        this.setState({
+          data: fetchingData.results,
+          currentFilter: "byGenres",
+          totalPages: fetchingData.total_pages,
+          currentQuery: currentQuery,
+          currentPage: 1
+        })
     );
   };
 
@@ -52,18 +72,10 @@ class FilterMovies extends Component {
       this.setState({ data: snapshot.val().movies });
     });
   }
-  movieFilter = () => {
-    const { value, data } = this.state;
 
-    const filtredMovie = data.filter(
-      movie => movie.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-
-    //this.setState({ data: filtredMovie });
-    return value ? filtredMovie : data;
-  };
   render() {
-    const data = this.movieFilter();
+    const { data } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -96,16 +108,11 @@ class FilterMovies extends Component {
             </button>
           </div>
           <div className="col-md-9">
-            <MovieTable
-              data={data}
-              pageInfo={this.state.currentPage}
-              movieOnPage={this.state.movieOnPage}
-            />
+            <MovieTable data={data} pageInfo={this.state.currentPage} />
             <Pagination
-              movieCount={data.length}
+              totalPages={this.state.totalPages}
               currentPage={this.state.currentPage}
               onClick={this.handlePageClick}
-              movieOnPage={this.state.movieOnPage}
             />
           </div>
         </div>
@@ -114,4 +121,4 @@ class FilterMovies extends Component {
   }
 }
 
-export default FilterMovies;
+export default MoviesDB;
