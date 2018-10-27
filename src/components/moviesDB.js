@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 
-import MovieTable from "./movieTable";
+import MovieCard from "./contentCard";
 import Pagination from "./pagination";
 import Checkbox from "./checkbox";
 
-import { database } from "../services/firebase";
 import { GENRES, fetchData } from "../services/fetchingData";
 import { queryMaker } from "../services/helpers";
 
@@ -76,14 +75,12 @@ class MoviesDB extends Component {
   };
 
   componentDidMount() {
-    // database.ref().on("value", snapshot => {
-    //   this.setState({ data: snapshot.val().movies });
-    // });
     const { currentPage } = this.state;
     const options = { type: "discoverMovies", page: currentPage };
     fetchData(options).then(fetchingData =>
       this.setState({
-        data: fetchingData.results
+        data: fetchingData.results,
+        totalPages: fetchingData.total_pages
       })
     );
   }
@@ -123,7 +120,17 @@ class MoviesDB extends Component {
             </button>
           </div>
           <div className="col-md-9">
-            <MovieTable data={data} pageInfo={this.state.currentPage} />
+            <div className="d-flex flex-wrap">
+              {data.map(item => (
+                <MovieCard
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  posterPath={item.poster_path}
+                  cardType="movie"
+                />
+              ))}
+            </div>
             <Pagination
               totalPages={this.state.totalPages}
               currentPage={this.state.currentPage}

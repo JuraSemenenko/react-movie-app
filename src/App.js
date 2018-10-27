@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import MoviesDB from "./components/moviesDB";
-import ActorsDB from "./components/actorsDB";
+import People from "./components/actorsDB";
 import MovieCardContent from "./components/movieCardContent";
 import NavBar from "./components/navBar";
 import NotFound from "./components/notFound";
 import Profile from "./components/profile";
 import Login from "./components/login";
 import SignIn from "./components/signIn";
+import PeopleCardContent from "./components/peopleCardContent";
 import PrivateRoute from "./components/privateRoute";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import firebase from "./services/firebase";
+
 class App extends Component {
   state = {
     user: { isAuth: false, uid: "", userName: "" }
@@ -53,7 +55,8 @@ class App extends Component {
         />
         <Switch>
           <Route path="/movie/:id" component={MovieCardContent} />
-          <Route path="/actors-data-base" component={ActorsDB} />
+          <Route path="/people/:id" component={PeopleCardContent} />
+          <Route path="/people-data-base" component={People} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/sign-in" component={SignIn} />
           <PrivateRoute

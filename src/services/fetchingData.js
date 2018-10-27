@@ -1,5 +1,31 @@
 const API_KEY = "340af08aad86d2a893fef0bc25ea615d";
 const API_URL = "https://api.themoviedb.org/3/";
+
+export const fetchData = options => {
+  // Опции поиска по базе данных фильмов
+  const type = options.type;
+  const searchOptions = {
+    movie: "search/movie",
+    discoverMovies: "discover/movie",
+    popularPerson: "person/popular"
+  };
+  const genres = options.genres || "";
+  const query = options.query || "";
+  const page = options.page || "1";
+  const sortBy = options.sortBy || "popularity.desc";
+  const adult = options.adult || true;
+
+  // Финальный УРЛ для запроса к АПИ
+  const URL = `${API_URL}${
+    searchOptions[type]
+  }?api_key=${API_KEY}&page=${page}&sort_by=${sortBy}&query=${query}&with_genres=${genres}&include_adult=${adult}`;
+
+  // Запрос к АПИ и ответ в виде Промиса
+  const fetchRes = fetch(URL).then(response => response.json());
+
+  return fetchRes;
+};
+
 export const GENRES = [
   {
     id: 28,
@@ -78,23 +104,3 @@ export const GENRES = [
     name: "Western"
   }
 ];
-
-export const fetchData = options => {
-  const type = options.type;
-  const searchOptions = {
-    movie: "search/movie",
-    discoverMovies: "discover/movie",
-    popularPerson: "person/popular"
-  };
-  const genres = options.genres || "";
-  const query = options.query || "";
-  const page = options.page || "1";
-  const sortBy = options.sortBy || "popularity.desc";
-  const adult = options.adult || true;
-  const URL = `${API_URL}${
-    searchOptions[type]
-  }?api_key=${API_KEY}&page=${page}&sort_by=${sortBy}&query=${query}&with_genres=${genres}&include_adult=${adult}`;
-  const fetchRes = fetch(URL).then(response => response.json());
-
-  return fetchRes;
-};

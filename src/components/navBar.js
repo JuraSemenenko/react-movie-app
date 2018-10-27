@@ -13,8 +13,8 @@ const NavBar = ({ isAuth, profileName }) => {
         </li>
 
         <li className="nav-item flex-sm-fill text-sm-center">
-          <Link className="nav-link" to="/actors-data-base">
-            Actors
+          <Link className="nav-link" to="/people-data-base">
+            People
           </Link>
         </li>
       </ul>
