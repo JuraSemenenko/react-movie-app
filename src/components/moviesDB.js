@@ -15,12 +15,19 @@ class MoviesDB extends Component {
     totalPages: 13,
     value: "",
     filter: { genres: {} },
-    searchType: "moviesDiscover",
-    currentQuery: ""
+    searchType: "discoverMovies",
+    movieQuery: "",
+    genresQuery: ""
   };
   handlePageClick = page => {
-    const { currentQuery, searchType, currentPage } = this.state;
-    fetchData(currentQuery, searchType, page).then(fetchingData =>
+    const { genresQuery, movieQuery, searchType } = this.state;
+    const options = {
+      type: searchType,
+      genres: genresQuery,
+      page: page,
+      query: movieQuery
+    };
+    fetchData(options).then(fetchingData =>
       this.setState({
         data: fetchingData.results,
         currentPage: page
@@ -39,31 +46,32 @@ class MoviesDB extends Component {
   };
   // ТуДу Отрефакторить. Обьеденить футкции в одну handleTitleSearch и handleGenresSearch
   handleTitleSearch = () => {
-    const currentQuery = this.state.value.toLowerCase();
-    fetchData(currentQuery, "movieInfo").then(fetchingData =>
+    const movieQuery = this.state.value.toLowerCase();
+    const options = { type: "movie", query: movieQuery };
+    fetchData(options).then(fetchingData => {
+      console.log("fetchingData", fetchingData);
       this.setState({
         data: fetchingData.results,
-        searchType: "movieInfo",
+        searchType: "movie",
         totalPages: fetchingData.total_pages,
-        currentQuery: currentQuery,
+        movieQuery: movieQuery,
         currentPage: 1
-      })
-    );
+      });
+    });
   };
 
   handleGenresSearch = () => {
     const genres = { ...this.state.filter.genres };
-    const currentQuery = queryMaker(genres);
-
-    fetchData(currentQuery, "moviesDiscover", this.state.currentPage).then(
-      fetchingData =>
-        this.setState({
-          data: fetchingData.results,
-          searchType: "moviesDiscover",
-          totalPages: fetchingData.total_pages,
-          currentQuery: currentQuery,
-          currentPage: 1
-        })
+    const genresQuery = queryMaker(genres);
+    const options = { type: "discoverMovies", genres: genresQuery };
+    fetchData(options).then(fetchingData =>
+      this.setState({
+        data: fetchingData.results,
+        searchType: "discoverMovies",
+        totalPages: fetchingData.total_pages,
+        genresQuery: genresQuery,
+        currentPage: 1
+      })
     );
   };
 
@@ -72,7 +80,8 @@ class MoviesDB extends Component {
     //   this.setState({ data: snapshot.val().movies });
     // });
     const { currentPage } = this.state;
-    fetchData("", "moviesDiscover", currentPage).then(fetchingData =>
+    const options = { type: "discoverMovies", page: currentPage };
+    fetchData(options).then(fetchingData =>
       this.setState({
         data: fetchingData.results
       })

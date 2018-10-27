@@ -1,5 +1,5 @@
 const API_KEY = "340af08aad86d2a893fef0bc25ea615d";
-
+const API_URL = "https://api.themoviedb.org/3/";
 export const GENRES = [
   {
     id: 28,
@@ -79,16 +79,22 @@ export const GENRES = [
   }
 ];
 
-export const fetchData = (query, searchType, page) => {
-  if (searchType === "movieInfo") {
-    const FETCH_URL = "https://api.themoviedb.org/3/search/movie?";
-    return fetch(
-      `${FETCH_URL}api_key=${API_KEY}&query=${query}&page=${page}`
-    ).then(response => response.json());
-  } else if (searchType === "moviesDiscover") {
-    const FETCH_URL = "https://api.themoviedb.org/3/discover/movie?";
-    return fetch(
-      `${FETCH_URL}api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=${page}&with_genres=${query}`
-    ).then(response => response.json());
-  }
+export const fetchData = options => {
+  const type = options.type;
+  const searchOptions = {
+    movie: "search/movie",
+    discoverMovies: "discover/movie",
+    popularPerson: "person/popular"
+  };
+  const genres = options.genres || "";
+  const query = options.query || "";
+  const page = options.page || "1";
+  const sortBy = options.sortBy || "popularity.desc";
+  const adult = options.adult || true;
+  const URL = `${API_URL}${
+    searchOptions[type]
+  }?api_key=${API_KEY}&page=${page}&sort_by=${sortBy}&query=${query}&with_genres=${genres}&include_adult=${adult}`;
+  const fetchRes = fetch(URL).then(response => response.json());
+
+  return fetchRes;
 };
