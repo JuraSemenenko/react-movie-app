@@ -79,16 +79,14 @@ export const GENRES = [
   }
 ];
 
-export const fetchData = (query, searchBy, page) => {
-  if (searchBy === "byTitle") {
-    console.log("query_fetch", query);
+export const fetchData = (query, searchType, page) => {
+  if (searchType === "movieInfo") {
     const FETCH_URL = "https://api.themoviedb.org/3/search/movie?";
     return fetch(
       `${FETCH_URL}api_key=${API_KEY}&query=${query}&page=${page}`
     ).then(response => response.json());
-  } else if (searchBy === "byGenres") {
+  } else if (searchType === "moviesDiscover") {
     const FETCH_URL = "https://api.themoviedb.org/3/discover/movie?";
-    console.log("query_fetch", query);
     return fetch(
       `${FETCH_URL}api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=false&page=${page}&with_genres=${query}`
     ).then(response => response.json());

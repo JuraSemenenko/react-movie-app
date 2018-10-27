@@ -6,26 +6,31 @@ import NavBar from "./components/navBar";
 import NotFound from "./components/notFound";
 import Profile from "./components/profile";
 import Login from "./components/login";
+import SignIn from "./components/signIn";
+import PrivateRoute from "./components/privateRoute";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import firebase from "./services/firebase";
 class App extends Component {
   state = {
-    user: { isAuth: false, uid: "" }
+    user: { isAuth: false, uid: "", userName: "" }
   };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        console.log("user", user);
         this.setState({
           user: {
             isAuth: true,
             uid: user.uid,
-            email: user.email
+            email: user.email,
+            userName: user.displayName
           }
         });
       } else {
-        this.setState({ user: {} });
+        console.log("no user");
+        this.setState({ user: { isAuth: false, uid: "", userName: "" } });
       }
     });
   }
@@ -41,17 +46,20 @@ class App extends Component {
     const { user } = this.state;
     return (
       <React.Fragment>
-        <NavBar isAuth={user.isAuth} profileEmail={user.email} />
+        <NavBar
+          isAuth={user.isAuth}
+          profileEmail={user.email}
+          profileName={user.userName}
+        />
         <Switch>
           <Route path="/movie/:id" component={MovieCardContent} />
-
           <Route path="/actors-data-base" component={ActorsDB} />
           <Route path="/not-found" component={NotFound} />
-          <Route
+          <Route path="/sign-in" component={SignIn} />
+          <PrivateRoute
             path="/profile"
-            render={props => (
-              <Profile clearLoginData={this.clearLoginData} {...props} />
-            )}
+            isAuth={user.isAuth}
+            component={Profile}
           />
           <Route
             path="/login"

@@ -1,51 +1,48 @@
 import React from "react";
+import { logOut } from "../services/auth";
+import { Link } from "react-router-dom";
 
-import { NavLink } from "react-router-dom";
-
-const NavBar = ({ isAuth, profileEmail }) => {
+const NavBar = ({ isAuth, profileName }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <NavLink className="navbar-brand" to="/">
-        Movies App
-      </NavLink>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon" />
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/">
-              Movie Data Base
-            </NavLink>
+    <nav className="nav nav-pills d-flex justify-content-between">
+      <ul className="d-flex justify-content-start">
+        <li className="nav-item flex-sm-fill text-sm-center">
+          <Link className="nav-link" to="/">
+            Movie Data Base
+          </Link>
+        </li>
+
+        <li className="nav-item flex-sm-fill text-sm-center">
+          <Link className="nav-link" to="/actors-data-base">
+            Actors
+          </Link>
+        </li>
+      </ul>
+      <ul className="d-flex justify-content-end">
+        <li className="nav-item flex-sm-fill text-sm-center">
+          <Link className="nav-link" to="/profile">
+            {`Profile ${profileName}`}
+          </Link>
+        </li>
+        {!isAuth && (
+          <li className="nav-item flex-sm-fill text-sm-center">
+            <Link className="nav-link" to="/login">
+              Login
+            </Link>
           </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="selections">
-              Actors
-            </NavLink>
+        )}
+        {isAuth && (
+          <li className="nav-item flex-sm-fill text-sm-center">
+            <button
+              className="btn btn-outline-success"
+              type="button"
+              onClick={() => logOut()}
+            >
+              Logout
+            </button>
           </li>
-          {isAuth ? (
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/profile">
-                {`Profile ${profileEmail}`}
-              </NavLink>
-            </li>
-          ) : (
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/login">
-                Login
-              </NavLink>
-            </li>
-          )}
-        </ul>
-      </div>
+        )}
+      </ul>
     </nav>
   );
 };

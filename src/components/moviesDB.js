@@ -15,12 +15,12 @@ class MoviesDB extends Component {
     totalPages: 13,
     value: "",
     filter: { genres: {} },
-    currentFilter: null,
+    searchType: "moviesDiscover",
     currentQuery: ""
   };
   handlePageClick = page => {
-    const { currentQuery, currentFilter, currentPage } = this.state;
-    fetchData(currentQuery, currentFilter, currentPage).then(fetchingData =>
+    const { currentQuery, searchType, currentPage } = this.state;
+    fetchData(currentQuery, searchType, page).then(fetchingData =>
       this.setState({
         data: fetchingData.results,
         currentPage: page
@@ -40,10 +40,10 @@ class MoviesDB extends Component {
   // ТуДу Отрефакторить. Обьеденить футкции в одну handleTitleSearch и handleGenresSearch
   handleTitleSearch = () => {
     const currentQuery = this.state.value.toLowerCase();
-    fetchData(currentQuery, "byTitle").then(fetchingData =>
+    fetchData(currentQuery, "movieInfo").then(fetchingData =>
       this.setState({
         data: fetchingData.results,
-        currentFilter: "byTitle",
+        searchType: "movieInfo",
         totalPages: fetchingData.total_pages,
         currentQuery: currentQuery,
         currentPage: 1
@@ -55,11 +55,11 @@ class MoviesDB extends Component {
     const genres = { ...this.state.filter.genres };
     const currentQuery = queryMaker(genres);
 
-    fetchData(currentQuery, "byGenres", this.state.currentPage).then(
+    fetchData(currentQuery, "moviesDiscover", this.state.currentPage).then(
       fetchingData =>
         this.setState({
           data: fetchingData.results,
-          currentFilter: "byGenres",
+          searchType: "moviesDiscover",
           totalPages: fetchingData.total_pages,
           currentQuery: currentQuery,
           currentPage: 1
@@ -68,9 +68,15 @@ class MoviesDB extends Component {
   };
 
   componentDidMount() {
-    database.ref().on("value", snapshot => {
-      this.setState({ data: snapshot.val().movies });
-    });
+    // database.ref().on("value", snapshot => {
+    //   this.setState({ data: snapshot.val().movies });
+    // });
+    const { currentPage } = this.state;
+    fetchData("", "moviesDiscover", currentPage).then(fetchingData =>
+      this.setState({
+        data: fetchingData.results
+      })
+    );
   }
 
   render() {

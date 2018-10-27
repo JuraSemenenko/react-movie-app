@@ -1,34 +1,47 @@
 import React, { Component } from "react";
-import { logIn, signIn } from "../services/auth";
-import { Link } from "react-router-dom";
+import { signIn } from "../services/auth";
 
-class Login extends Component {
+class SignIn extends Component {
   state = {
+    name: "",
     email: "",
     password: ""
   };
 
-  handleLogin = () => {
-    logIn(this.state.email, this.state.password);
+  handleSignin = e => {
+    e.preventDefault();
+    signIn(this.state.email, this.state.password, this.state.name);
     this.props.history.push("/");
   };
 
   handleInput = event => {
     const formsInput = { ...this.state };
-    formsInput[event.currentTarget.type] = event.currentTarget.value;
+    formsInput[event.currentTarget.id] = event.currentTarget.value;
     this.setState({ ...formsInput });
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, name } = this.state;
     return (
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-lg-">
             <form>
               <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Email address</label>
+                <label htmlFor="name">Your full name</label>
                 <input
+                  id="name"
+                  type="text"
+                  className="form-control"
+                  placeholder="Your full name"
+                  value={name}
+                  onChange={this.handleInput}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email address</label>
+                <input
+                  id="email"
                   type="email"
                   className="form-control"
                   placeholder="Enter email"
@@ -40,8 +53,9 @@ class Login extends Component {
                 </small>
               </div>
               <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Password</label>
+                <label htmlFor="password">Password</label>
                 <input
+                  id="password"
                   type="password"
                   className="form-control"
                   placeholder="Password"
@@ -49,16 +63,12 @@ class Login extends Component {
                   onChange={this.handleInput}
                 />
               </div>
-
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={this.handleLogin}
+                onClick={this.handleSignin}
               >
-                Login
-              </button>
-              <button type="submit" className="btn btn-primary">
-                <Link to="/sign-in">Sign In</Link>
+                Sign In
               </button>
             </form>
           </div>
@@ -68,4 +78,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignIn;

@@ -1,11 +1,21 @@
-import firebase from "./firebase";
+import firebase, { database } from "./firebase";
 
-export const signIn = (email, password) => {
-  if (email && password) {
+export const signIn = (email, password, name) => {
+  if (email && password && name) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .catch(function(error) {
+      .then(() => {
+        let user = firebase.auth().currentUser;
+        user
+          .updateProfile({
+            displayName: name
+          })
+          .then(() => {
+            dbUserAdd(user);
+          });
+      })
+      .catch(error => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -14,7 +24,7 @@ export const signIn = (email, password) => {
   }
 };
 
-export const logIn = function(email, password) {
+export const logIn = (email, password) => {
   if (email && password) {
     firebase
       .auth()
@@ -35,5 +45,14 @@ export const logOut = () => {
     .then(function() {
       // Sign-out successful.
       console.log("Sign-out successful.");
+    });
+};
+
+const dbUserAdd = user => {
+  firebase
+    .database()
+    .ref("users/" + user.uid)
+    .set({
+      name: user.displayName
     });
 };
