@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Comment from "./comment";
 class MovieCardContent extends Component {
   state = {
     data: {},
@@ -25,7 +25,7 @@ class MovieCardContent extends Component {
   }
 
   render() {
-    const { data, videos } = this.state;
+    const { data, movieId } = this.state;
 
     return (
       <React.Fragment>
@@ -113,6 +113,7 @@ class MovieCardContent extends Component {
               </div> </div>*/}
           </div>
         </div>
+        <Comment id={movieId} commentTo={"movie"} />
       </React.Fragment>
     );
   }

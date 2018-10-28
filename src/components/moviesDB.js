@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import MovieCard from "./contentCard";
+import CardRender from "./cardRender";
 import Pagination from "./pagination";
-import Checkbox from "./checkbox";
-
-import { GENRES, fetchData } from "../services/fetchingData";
+import ChangeViewButton from "./changeViewButton";
+import Filter from "./filter";
+import { fetchData } from "../services/fetchingData";
 import { queryMaker } from "../services/helpers";
 
 class MoviesDB extends Component {
@@ -16,7 +16,8 @@ class MoviesDB extends Component {
     filter: { genres: {} },
     searchType: "discoverMovies",
     movieQuery: "",
-    genresQuery: ""
+    genresQuery: "",
+    isRenderGallery: true
   };
   handlePageClick = page => {
     const { genresQuery, movieQuery, searchType } = this.state;
@@ -36,6 +37,9 @@ class MoviesDB extends Component {
 
   handleInput = e => {
     this.setState({ value: e.target.value });
+  };
+  handleChangeView = () => {
+    this.setState({ isRenderGallery: !this.state.isRenderGallery });
   };
 
   handleChacked = e => {
@@ -86,50 +90,42 @@ class MoviesDB extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, isRenderGallery } = this.state;
 
     return (
       <div className="container">
+        <div className="d-flex justify-content-around">
+          <h2>
+            Tatal pages of Movies = {this.state.totalPages}, current page -{" "}
+            {this.state.currentPage}
+          </h2>
+          <div>
+            <ChangeViewButton
+              btnClick={this.handleChangeView}
+              isRenderGallery={isRenderGallery}
+            />
+          </div>
+        </div>
         <div className="row">
           <div className="col-md-3">
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Search Movie"
+            <Filter
               value={this.state.value}
-              onChange={this.handleInput}
-            />
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={this.handleTitleSearch}
-            >
-              Search by title
-            </button>
-            <Checkbox
-              data={GENRES}
+              searchChange={this.handleInput}
+              acceptSearch={this.handleTitleSearch}
               handleChacked={this.handleChacked}
-              statusData={this.state.filter.genres}
+              filteredGenres={this.state.filter.genres}
+              acceptGenresSearch={this.handleGenresSearch}
             />
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={this.handleGenresSearch}
-            >
-              Search by genres
-            </button>
           </div>
           <div className="col-md-9">
             <div className="d-flex flex-wrap">
-              {data.map(item => (
-                <MovieCard
-                  key={item.id}
-                  id={item.id}
-                  title={item.title}
-                  posterPath={item.poster_path}
-                  cardType="movie"
-                />
-              ))}
+              <CardRender
+                data={data}
+                cardType="movie"
+                title="title"
+                posterPath="poster_path"
+                isRenderGallery={isRenderGallery}
+              />
             </div>
             <Pagination
               totalPages={this.state.totalPages}
