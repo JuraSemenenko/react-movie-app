@@ -14,3 +14,18 @@ firebase.initializeApp(config);
 export default firebase;
 
 export const database = firebase.database();
+
+export const writeCommentsData = (URL, setData) => {
+  firebase
+    .database()
+    .ref(URL)
+    .set(setData);
+};
+export const takeCommentsData = PATH => {
+  return firebase
+    .database()
+    .ref(PATH)
+    .on("value", snapshot => {
+      return { data: snapshot.val() };
+    });
+};

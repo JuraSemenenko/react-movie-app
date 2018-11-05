@@ -1,6 +1,7 @@
 import React from "react";
 import { GENRES } from "../services/fetchingData";
 import Checkbox from "./checkbox";
+import Input from "./common/input";
 const Filter = ({
   value,
   searchChange,
@@ -11,12 +12,11 @@ const Filter = ({
 }) => {
   return (
     <React.Fragment>
-      <input
-        className="form-control"
+      <Input
         type="text"
         placeholder="Search Movie"
         value={value}
-        onChange={searchChange}
+        handleInputChange={searchChange}
       />
       <button type="submit" className="btn btn-primary" onClick={acceptSearch}>
         Search by title

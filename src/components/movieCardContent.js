@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import Comment from "./comment";
+import firebase from "../services/firebase";
+import { getUserIdFromCookie } from "../services/helpers";
+import Like from "./common/like";
 class MovieCardContent extends Component {
   state = {
     data: {},
     movieId: this.props.match.params.id,
-    videos: { results: [] }
+    videos: { results: [] },
+    liked: false
   };
 
   componentDidMount() {
@@ -15,17 +19,34 @@ class MovieCardContent extends Component {
     )
       .then(response => response.json())
       .then(data => this.setState({ data }));
-    fetch(
-      `https://api.themoviedb.org/3/movie/${
-        this.state.movieId
-      }/videos?api_key=340af08aad86d2a893fef0bc25ea615d&language=en-US`
-    )
-      .then(response => response.json())
-      .then(videos => this.setState({ videos }));
-  }
 
+    const cookieUserId = getUserIdFromCookie();
+
+    console.log("data from cookie = ", cookieUserId);
+
+    firebase
+      .database()
+      .ref("users/" + cookieUserId + "/favorites/movies/" + this.state.movieId)
+      .once("value")
+      .then(
+        snapshot =>
+          snapshot.val() ? this.setState({ liked: snapshot.val().liked }) : null
+      );
+  }
+  handleFavorites = () => {
+    let user = firebase.auth().currentUser;
+    const userId = user.uid;
+    firebase
+      .database()
+      .ref("users/" + userId + "/favorites/movies/" + this.state.movieId)
+      .set({
+        liked: !this.state.liked
+      });
+
+    this.setState({ liked: !this.state.liked });
+  };
   render() {
-    const { data, movieId } = this.state;
+    const { data, movieId, liked, videos } = this.state;
 
     return (
       <React.Fragment>
@@ -38,6 +59,7 @@ class MovieCardContent extends Component {
                 alt="Poster"
               />
               <h2>{data.title}</h2>
+              <Like onClick={this.handleFavorites} liked={liked} />
               <p>{data.overview}</p>
             </div>
 
@@ -94,23 +116,6 @@ class MovieCardContent extends Component {
                 </tbody>
               </table>
             </div>
-            {/* <div className="container">
-              <div className="row">
-                <div className="col-md-4">
-                  {console.log(this.state)}
-                  {videos.results.map(video => (
-                    <iframe
-                      hey={video.id}
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${video.id}`}
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                    />
-                  ))}
-                </div>
-              </div> </div>*/}
           </div>
         </div>
         <Comment id={movieId} commentTo={"movie"} />

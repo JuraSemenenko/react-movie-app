@@ -21,7 +21,7 @@ const ContentList = ({ data, cardType, title, vote }) => {
               <th scope="row">{item.id}</th>
               <td>{item[title]}</td>
               <td>{item[vote]}</td>
-              <td>Favorites</td>
+
               <td>
                 <Link
                   className="btn btn-primary"

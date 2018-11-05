@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const NavBar = ({ isAuth, profileName }) => {
   return (
-    <nav className="nav nav-pills d-flex justify-content-between">
+    <nav className="nav nav-pills d-flex justify-content-between m-4">
       <ul className="d-flex justify-content-start">
         <li className="nav-item flex-sm-fill text-sm-center">
           <Link className="nav-link" to="/">

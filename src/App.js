@@ -15,7 +15,8 @@ import firebase from "./services/firebase";
 
 class App extends Component {
   state = {
-    user: { isAuth: false, uid: "", userName: "" }
+    user: { isAuth: false, uid: "", userName: "" },
+    curreentUser: {}
   };
 
   componentDidMount() {
@@ -28,8 +29,10 @@ class App extends Component {
             uid: user.uid,
             email: user.email,
             userName: user.displayName
-          }
+          },
+          curreentUser: user
         });
+        document.cookie = `userid=${user.uid}`;
       } else {
         console.log("no user");
         this.setState({ user: { isAuth: false, uid: "", userName: "" } });
@@ -45,7 +48,7 @@ class App extends Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { user, curreentUser } = this.state;
     return (
       <React.Fragment>
         <NavBar
@@ -62,6 +65,7 @@ class App extends Component {
           <PrivateRoute
             path="/profile"
             isAuth={user.isAuth}
+            user={curreentUser}
             component={Profile}
           />
           <Route

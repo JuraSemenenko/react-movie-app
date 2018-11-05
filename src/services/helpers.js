@@ -23,3 +23,36 @@ export const paginationArrMaker = (currentPage, totalPage) => {
     return _.range(totalPage - 4, totalPage + 1);
   }
 };
+
+export const getUserIdFromCookie = () =>
+  document.cookie.replace(
+    /(?:(?:^|.*;\s*)userid\s*\=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
+
+export const dateFromTime = UNIX_time => {
+  var a = new Date(+UNIX_time);
+  var months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time =
+    date + " " + month + " " + year + " at " + hour + ":" + min + ":" + sec;
+  return time;
+};
