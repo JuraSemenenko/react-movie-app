@@ -14,12 +14,15 @@ export const signIn = (email, password, name) => {
           .then(() => {
             dbUserAdd(user);
           });
+        console.log("All fine");
+        return true;
       })
       .catch(error => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.log("All bad(((");
+        return false;
       });
   }
 };

@@ -2,10 +2,11 @@ import React from "react";
 
 const Checkbox = ({ data, handleChacked, statusData }) => {
   return (
-    <React.Fragment>
+    <div className="m-1 p-1">
       {data.map(item => (
         <div key={item.id}>
           <input
+            className="m-1"
             type="checkbox"
             id={item.id}
             name={item.name}
@@ -13,10 +14,13 @@ const Checkbox = ({ data, handleChacked, statusData }) => {
             onChange={handleChacked}
             checked={statusData[item.id] || false}
           />
-          <label htmlFor={item.id}> {item.name}</label>
+          <label className="m-1" htmlFor={item.id}>
+            {" "}
+            {item.name}
+          </label>
         </div>
       ))}
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -18,7 +18,11 @@ const Filter = ({
         value={value}
         handleInputChange={searchChange}
       />
-      <button type="submit" className="btn btn-primary" onClick={acceptSearch}>
+      <button
+        type="submit"
+        className="btn btn-primary m-1"
+        onClick={acceptSearch}
+      >
         Search by title
       </button>
       <Checkbox
@@ -28,7 +32,7 @@ const Filter = ({
       />
       <button
         type="submit"
-        className="btn btn-primary"
+        className="btn btn-primary m-1"
         onClick={acceptGenresSearch}
       >
         Search by genres

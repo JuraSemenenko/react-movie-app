@@ -10,7 +10,7 @@ const ContentList = ({ data, cardType, title, vote }) => {
           <th scope="col">ID</th>
           <th scope="col">Title</th>
           <th scope="col">Avg. rating</th>
-          <th scope="col">Favorites</th>
+
           <th scope="col">Link</th>
         </tr>
       </thead>

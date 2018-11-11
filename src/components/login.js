@@ -9,7 +9,11 @@ class Login extends Component {
   };
 
   handleLogin = () => {
-    logIn(this.state.email, this.state.password);
+    if (logIn(this.state.email, this.state.password)) {
+      console.log(true);
+    } else {
+      console.log(false);
+    }
     this.props.history.push("/");
   };
 

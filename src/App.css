@@ -1,3 +1,21 @@
 li {
   list-style: none;
 }
+
+.border-radius {
+  border-radius: 2px 2px 2px 2px;
+  border: 1px solid #00c4ff;
+}
+
+.nav-link {
+  font-size: 1.5rem;
+}
+
+.navbar-my {
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-align: center;
+  align-items: center;
+}
