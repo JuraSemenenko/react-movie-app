@@ -34,11 +34,10 @@ class MovieCardContent extends Component {
       );
   }
   handleFavorites = () => {
-    let user = firebase.auth().currentUser;
-    const userId = user.uid;
+    const cookieUserId = getUserIdFromCookie();
     firebase
       .database()
-      .ref("users/" + userId + "/favorites/movies/" + this.state.movieId)
+      .ref("users/" + cookieUserId + "/favorites/movies/" + this.state.movieId)
       .set({
         liked: !this.state.liked
       });

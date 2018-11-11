@@ -7,7 +7,7 @@ const Like = props => {
     <h4>
       <p className="badge badge-primary m-1">
         {props.liked
-          ? "This movie in your favorites: "
+          ? `This ${props.content} in your favorites: `
           : "Click to add to favorites: "}
         <span
           onClick={props.onClick}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import firebase, { writeCommentsData } from "../services/firebase";
+import firebase, { writeCommentsData, deleteData } from "../services/firebase";
 import { dateFromTime, getUserIdFromCookie } from "../services/helpers";
 class Comment extends Component {
   state = {
@@ -40,6 +40,11 @@ class Comment extends Component {
     const URL = `${this.props.commentTo}/${peopleId}comments/${commentId}`;
     this.setState({ commentText: "" });
     writeCommentsData(URL, setData);
+  };
+  handleDeleteComment = key => {
+    const URL = `${this.props.commentTo}/${this.props.id}/comments/${key}`;
+    console.log("key = ", key, "URL = ", URL);
+    deleteData(URL);
   };
 
   render() {
@@ -83,6 +88,7 @@ class Comment extends Component {
                     type="button"
                     className="btn btn-danger"
                     disabled={!(this.state.userId == data[key].authorUID)}
+                    onClick={() => this.handleDeleteComment(key)}
                   >
                     Delete
                   </button>

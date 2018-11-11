@@ -38,3 +38,17 @@ export const addToFavorites = (cookieUserId, contentType, id, liked) => {
       liked: !liked
     });
 };
+
+export const deleteData = URL => {
+  const dataRef = firebase.database().ref(URL);
+  dataRef
+    .remove()
+    .then(() => {
+      console.log("Remove succeeded.");
+    })
+    .catch(error => {
+      console.log("Remove failed: " + error.message);
+    });
+};
+
+export const editData = () => {};
