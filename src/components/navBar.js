@@ -32,14 +32,14 @@ const NavBar = ({ isAuth, profileName }) => {
             </NavLink>
           </li>
           {!isAuth && (
-            <li className="nav-item flex-sm-fill text-sm-center">
+            <li className="nav-item">
               <NavLink className="nav-link" to="/login">
                 Login
               </NavLink>
             </li>
           )}
           {isAuth && (
-            <li className="nav-item flex-sm-fill text-sm-center">
+            <li className="nav-item">
               <NavLink className="nav-link" to="/login">
                 <button
                   className="btn btn-outline-success"

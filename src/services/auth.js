@@ -1,30 +1,34 @@
 import firebase, { database } from "./firebase";
 
-export const signIn = (email, password, name) => {
+export const signIn = async (email, password, name) => {
+  const signInInfo = {
+    errors: null,
+    success: false
+  };
   if (email && password && name) {
-    firebase
+    await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        let user = firebase.auth().currentUser;
-        user
+      .then(value => {
+        console.log("value = ", value.user, value.user.uid);
+        //let user = firebase.auth().currentUser;
+        value.user
           .updateProfile({
             displayName: name
           })
           .then(() => {
-            dbUserAdd(user);
+            dbUserAdd(value.user);
           });
-        console.log("All fine");
-        return true;
+        signInInfo.success = true;
       })
       .catch(error => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log("All bad(((");
-        return false;
+        signInInfo.errors = {
+          errorCode: error.code,
+          errorMessage: error.message
+        };
       });
   }
+  return signInInfo;
 };
 
 export const logIn = (email, password) => {
@@ -51,7 +55,7 @@ export const logOut = () => {
     });
 };
 
-const dbUserAdd = user => {
+const dbUserAdd = async user => {
   firebase
     .database()
     .ref("users/" + user.uid)

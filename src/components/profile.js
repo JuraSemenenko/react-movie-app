@@ -15,7 +15,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <div class="container">
+      <div className="container">
         <div>
           <h1>Hello, {this.state.user.displayName}</h1>
           <button
