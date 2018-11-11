@@ -5,16 +5,23 @@ import { Link } from "react-router-dom";
 class Login extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    errors: {}
   };
 
-  handleLogin = () => {
-    if (logIn(this.state.email, this.state.password)) {
-      console.log(true);
+  handleLogin = async e => {
+    e.preventDefault();
+    const logInInfo = await logIn(this.state.email, this.state.password);
+    if (logInInfo.success === true) {
+      this.props.history.push("/profile");
     } else {
-      console.log(false);
+      this.setState({
+        errors: {
+          errorCode: logInInfo.errors.errorCode,
+          errorMessage: logInInfo.errors.errorMessage
+        }
+      });
     }
-    this.props.history.push("/");
   };
 
   handleInput = event => {
@@ -24,7 +31,7 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, errors } = this.state;
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -34,24 +41,41 @@ class Login extends Component {
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
                   type="email"
-                  className="form-control"
+                  className={
+                    errors.errorCode === "auth/invalid-email" ||
+                    errors.errorCode === "auth/user-not-found"
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   placeholder="Enter email"
                   value={email}
                   onChange={this.handleInput}
                 />
-                <small id="emailHelp" className="form-text text-muted">
-                  We'll never share your email with anyone else.
-                </small>
+                {errors.errorCode === "auth/user-not-found" ||
+                errors.errorCode === "auth/invalid-email" ? (
+                  <small id="emailHelp" className="invalid-feedback">
+                    {errors.errorMessage}
+                  </small>
+                ) : null}
               </div>
               <div className="form-group">
                 <label htmlFor="exampleInputPassword1">Password</label>
                 <input
                   type="password"
-                  className="form-control"
+                  className={
+                    errors.errorCode === "auth/wrong-password"
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
                   placeholder="Password"
                   value={password}
                   onChange={this.handleInput}
                 />
+                {errors.errorCode === "auth/wrong-password" ? (
+                  <small id="emailHelp" className="invalid-feedback">
+                    {errors.errorMessage}
+                  </small>
+                ) : null}
               </div>
 
               <button

@@ -10,8 +10,6 @@ export const signIn = async (email, password, name) => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(value => {
-        console.log("value = ", value.user, value.user.uid);
-        //let user = firebase.auth().currentUser;
         value.user
           .updateProfile({
             displayName: name
@@ -31,25 +29,31 @@ export const signIn = async (email, password, name) => {
   return signInInfo;
 };
 
-export const logIn = (email, password) => {
+export const logIn = async (email, password) => {
+  const logInInfo = {
+    success: true,
+    errors: {}
+  };
   if (email && password) {
-    firebase
+    await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+      .catch(error => {
+        logInInfo.errors = {
+          errorCode: error.code,
+          errorMessage: error.message
+        };
+        logInInfo.success = false;
       });
   }
+  return logInInfo;
 };
 
 export const logOut = () => {
   firebase
     .auth()
     .signOut()
-    .then(function() {
+    .then(() => {
       // Sign-out successful.
       console.log("Sign-out successful.");
     });
