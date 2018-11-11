@@ -4,15 +4,19 @@ const Like = props => {
   let classes = "fa fa-heart";
   if (!props.liked) classes += "-o";
   return (
-    <div>
-      <span>Add to favorites: </span>
-      <i
-        onClick={props.onClick}
-        style={{ cursor: "pointer" }}
-        className={classes}
-        aria-hidden="true"
-      />
-    </div>
+    <h4>
+      <p className="badge badge-primary m-1">
+        {props.liked
+          ? "This movie in your favorites: "
+          : "Click to add to favorites: "}
+        <span
+          onClick={props.onClick}
+          style={{ cursor: "pointer" }}
+          className={classes}
+          aria-hidden="true"
+        />
+      </p>
+    </h4>
   );
 };
 

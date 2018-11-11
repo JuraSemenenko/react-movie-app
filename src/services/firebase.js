@@ -29,3 +29,12 @@ export const takeCommentsData = PATH => {
       return { data: snapshot.val() };
     });
 };
+
+export const addToFavorites = (cookieUserId, contentType, id, liked) => {
+  firebase
+    .database()
+    .ref("users/" + cookieUserId + "/favorites/" + contentType + "/" + id)
+    .set({
+      liked: !liked
+    });
+};

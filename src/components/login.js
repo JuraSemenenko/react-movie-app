@@ -77,18 +77,19 @@ class Login extends Component {
                   </small>
                 ) : null}
               </div>
+              <div className="d-flex justify-content-between">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  onClick={this.handleLogin}
+                >
+                  Login
+                </button>
 
-              <button
-                type="submit"
-                className="btn btn-primary"
-                onClick={this.handleLogin}
-              >
-                Login
-              </button>
-
-              <Link className="btn btn-primary" to="/sign-in">
-                Sign In
-              </Link>
+                <Link className="btn btn-primary" to="/sign-in">
+                  Sign In
+                </Link>
+              </div>
             </form>
           </div>
         </div>

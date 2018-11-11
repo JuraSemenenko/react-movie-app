@@ -59,7 +59,13 @@ class MovieCardContent extends Component {
                 alt="Poster"
               />
               <h2>{data.title}</h2>
-              <Like onClick={this.handleFavorites} liked={liked} />
+
+              <Like
+                onClick={this.handleFavorites}
+                liked={liked}
+                content="movie"
+              />
+
               <p>{data.overview}</p>
             </div>
 
