@@ -3,49 +3,51 @@ import Comments from "./comments";
 import firebase from "../services/firebase";
 import { getUserIdFromCookie } from "../services/helpers";
 import Like from "./common/like";
+import { getDataFromDB, addToFavorites } from "../services/firebase";
+
 class MovieCardContent extends Component {
   state = {
     data: {},
     movieId: this.props.match.params.id,
     videos: { results: [] },
-    liked: false
+    liked: false,
+    title: "",
+    userID: ""
   };
 
   componentDidMount() {
+    const cookieUserId = getUserIdFromCookie();
+    const URL =
+      "users/" + cookieUserId + "/favorites/movies/" + this.state.movieId;
+
     fetch(
       `https://api.themoviedb.org/3/movie/${
         this.state.movieId
       }?api_key=340af08aad86d2a893fef0bc25ea615d&language=en-US`
     )
       .then(response => response.json())
-      .then(data => this.setState({ data }));
+      .then(data => this.setState({ data, userID: cookieUserId }));
 
-    const cookieUserId = getUserIdFromCookie();
-
-    console.log("data from cookie = ", cookieUserId);
-
-    firebase
-      .database()
-      .ref("users/" + cookieUserId + "/favorites/movies/" + this.state.movieId)
-      .once("value")
-      .then(
-        snapshot =>
-          snapshot.val() ? this.setState({ liked: snapshot.val().liked }) : null
-      );
+    getDataFromDB(URL).then(
+      data => (data ? this.setState({ liked: data.liked }) : null)
+    );
   }
   handleFavorites = () => {
+    const { movieId, liked, data } = this.state;
     const cookieUserId = getUserIdFromCookie();
-    firebase
-      .database()
-      .ref("users/" + cookieUserId + "/favorites/movies/" + this.state.movieId)
-      .set({
-        liked: !this.state.liked
-      });
+    const setObj = {
+      liked: !liked,
+      title: data.title,
+      id: movieId,
+      raiting: data.vote_average
+    };
+    const URL = "users/" + cookieUserId + "/favorites/movies/" + movieId;
+    addToFavorites(URL, setObj);
 
-    this.setState({ liked: !this.state.liked });
+    this.setState({ liked: !liked });
   };
   render() {
-    const { data, movieId, liked, videos } = this.state;
+    const { data, movieId, liked, videos, userID } = this.state;
 
     return (
       <React.Fragment>
@@ -59,11 +61,13 @@ class MovieCardContent extends Component {
               />
               <h2>{data.title}</h2>
 
-              <Like
-                onClick={this.handleFavorites}
-                liked={liked}
-                content="movie"
-              />
+              {userID && (
+                <Like
+                  onClick={this.handleFavorites}
+                  liked={liked}
+                  content="movie"
+                />
+              )}
 
               <p>{data.overview}</p>
             </div>

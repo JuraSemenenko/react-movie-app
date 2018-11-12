@@ -30,13 +30,11 @@ export const takeCommentsData = PATH => {
     });
 };
 
-export const addToFavorites = (cookieUserId, contentType, id, liked) => {
+export const addToFavorites = (URL, setObj) => {
   firebase
     .database()
-    .ref("users/" + cookieUserId + "/favorites/" + contentType + "/" + id)
-    .set({
-      liked: !liked
-    });
+    .ref(URL)
+    .set(setObj);
 };
 
 export const deleteData = URL => {
@@ -60,5 +58,15 @@ export const editData = (URL, data) => {
     })
     .catch(error => {
       console.log("Update failed: " + error.message);
+    });
+};
+
+export const getDataFromDB = URL => {
+  return firebase
+    .database()
+    .ref(URL)
+    .once("value")
+    .then(snapshot => {
+      return snapshot.val();
     });
 };

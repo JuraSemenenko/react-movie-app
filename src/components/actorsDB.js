@@ -3,13 +3,16 @@ import { fetchData } from "../services/fetchingData";
 import Pagination from "./pagination";
 import CardRender from "./cardRender";
 import ChangeViewButton from "./changeViewButton";
+import Input from "./common/input";
 class People extends Component {
   state = {
     data: [],
     searchType: "popularPerson",
     currentPage: 1,
     isRenderGallery: true,
-    totalPages: 1
+    totalPages: 1,
+    value: "",
+    actorQuery: ""
   };
 
   componentDidMount() {
@@ -41,8 +44,27 @@ class People extends Component {
     this.setState({ isRenderGallery: !this.state.isRenderGallery });
   };
 
+  handleInput = e => {
+    this.setState({ value: e.target.value });
+  };
+
+  handleTitleSearch = () => {
+    const actorQuery = this.state.value.toLowerCase();
+    const options = { type: "people", query: actorQuery };
+    fetchData(options).then(fetchingData => {
+      console.log("fetchingData", fetchingData);
+      this.setState({
+        data: fetchingData.results,
+        searchType: "people",
+        totalPages: fetchingData.total_pages,
+        actorQuery: actorQuery,
+        currentPage: 1
+      });
+    });
+  };
+
   render() {
-    const { data, isRenderGallery } = this.state;
+    const { data, isRenderGallery, value } = this.state;
 
     return (
       <div className="container">
@@ -51,11 +73,27 @@ class People extends Component {
             Tatal pages of People = {this.state.totalPages}, current page -{" "}
             {this.state.currentPage}
           </h2>
+
           <div>
             <ChangeViewButton
               btnClick={this.handleChangeView}
               isRenderGallery={isRenderGallery}
             />
+          </div>
+          <div>
+            <Input
+              type="text"
+              placeholder="Search Movie"
+              value={value}
+              handleInputChange={this.handleInput}
+            />
+            <button
+              type="submit"
+              className="btn btn-primary m-1"
+              onClick={this.handleTitleSearch}
+            >
+              Search by name
+            </button>
           </div>
         </div>
 

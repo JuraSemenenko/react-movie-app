@@ -7,7 +7,8 @@ export const fetchData = options => {
   const searchOptions = {
     movie: "search/movie",
     discoverMovies: "discover/movie",
-    popularPerson: "person/popular"
+    popularPerson: "person/popular",
+    people: "search/person"
   };
   const genres = options.genres || "";
   const query = options.query || "";
