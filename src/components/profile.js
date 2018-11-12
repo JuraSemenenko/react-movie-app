@@ -10,7 +10,6 @@ class Profile extends Component {
     data: {}
   };
   handleLogout = () => {
-    this.props.clearLoginData();
     logOut();
   };
 
@@ -48,8 +47,7 @@ class Profile extends Component {
             <React.Fragment>
               <h3>You don't have favorites movies</h3>
               <p>
-                Find your favorite pictures{" "}
-                <Link to="/people-data-base">here</Link>.
+                Find your favorite pictures <Link to="/">here</Link>.
               </p>
               <hr />
             </React.Fragment>

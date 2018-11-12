@@ -55,8 +55,11 @@ export const logOut = () => {
     .signOut()
     .then(() => {
       // Sign-out successful.
+
       console.log("Sign-out successful.");
     });
+
+  document.cookie = `userid=`;
 };
 
 const dbUserAdd = async user => {

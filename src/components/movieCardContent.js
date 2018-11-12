@@ -19,7 +19,7 @@ class MovieCardContent extends Component {
     const cookieUserId = getUserIdFromCookie();
     const URL =
       "users/" + cookieUserId + "/favorites/movies/" + this.state.movieId;
-
+    console.log("cookieUserId", cookieUserId);
     fetch(
       `https://api.themoviedb.org/3/movie/${
         this.state.movieId

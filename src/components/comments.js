@@ -48,41 +48,45 @@ class Comments extends Component {
     const { data, userId } = this.state;
     const dataKeys = data ? Object.keys(data) : [];
     return (
-      <div className="container w-50">
-        <form>
-          <div className="form-group">
-            <label htmlFor="textarea">Your comment</label>
-            <textarea
-              className="form-control"
-              id="textarea"
-              rows="3"
-              value={this.state.commentText}
-              onChange={this.handleCommentText}
-            />
+      <React.Fragment>
+        <div className="container w-90">
+          {userId && (
+            <form>
+              <div className="form-group">
+                <label htmlFor="textarea">Your comment</label>
+                <textarea
+                  className="form-control"
+                  id="textarea"
+                  rows="3"
+                  value={this.state.commentText}
+                  onChange={this.handleCommentText}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={this.handleAddComment}
+              >
+                Add comment
+              </button>
+            </form>
+          )}
+          <div className="w-100 m-3">
+            {dataKeys.map(key => {
+              return (
+                <Comment
+                  key={key}
+                  data={data}
+                  commentId={key}
+                  contentId={this.state.id}
+                  userId={userId}
+                  commentTo={this.props.commentTo}
+                />
+              );
+            })}
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={this.handleAddComment}
-          >
-            Add comment
-          </button>
-        </form>
-        <div className="w-100 m-3">
-          {dataKeys.map(key => {
-            return (
-              <Comment
-                key={key}
-                data={data}
-                commentId={key}
-                contentId={this.state.id}
-                userId={userId}
-                commentTo={this.props.commentTo}
-              />
-            );
-          })}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
