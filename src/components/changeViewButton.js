@@ -8,14 +8,14 @@ const ChangeViewButton = ({ btnClick, isRenderGallery }) => {
         className={isRenderGallery ? "btn btn-primary" : "btn btn-secondary"}
         onClick={btnClick}
       >
-        <i class="fa fa-table" aria-hidden="true" />
+        <i className="fa fa-table" aria-hidden="true" />
       </button>
       <button
         type="submit"
         className={!isRenderGallery ? "btn btn-primary" : "btn btn-secondary"}
         onClick={btnClick}
       >
-        <i class="fa fa-list" aria-hidden="true" />
+        <i className="fa fa-list" aria-hidden="true" />
       </button>
     </React.Fragment>
   );

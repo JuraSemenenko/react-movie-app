@@ -43,7 +43,7 @@ class People extends Component {
 
   render() {
     const { data, isRenderGallery } = this.state;
-    console.log("people_data", data);
+
     return (
       <div className="container">
         <div className="d-flex justify-content-around">

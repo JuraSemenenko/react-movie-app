@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Comment from "./comment";
+import Comments from "./comments";
 import firebase from "../services/firebase";
 import { getUserIdFromCookie } from "../services/helpers";
 import Like from "./common/like";
@@ -123,7 +123,7 @@ class MovieCardContent extends Component {
             </div>
           </div>
         </div>
-        <Comment id={movieId} commentTo={"movie"} />
+        <Comments id={movieId} commentTo={"movie"} />
       </React.Fragment>
     );
   }

@@ -51,4 +51,14 @@ export const deleteData = URL => {
     });
 };
 
-export const editData = () => {};
+export const editData = (URL, data) => {
+  const dataRef = firebase.database().ref(URL);
+  dataRef
+    .update(data)
+    .then(() => {
+      console.log("Update succeeded.");
+    })
+    .catch(error => {
+      console.log("Update failed: " + error.message);
+    });
+};

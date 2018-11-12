@@ -1,104 +1,74 @@
 import React, { Component } from "react";
-import firebase, { writeCommentsData, deleteData } from "../services/firebase";
-import { dateFromTime, getUserIdFromCookie } from "../services/helpers";
+import CommentEdit from "./commentEdit";
+import CommentFill from "./commentFill";
+
+import { deleteData, editData } from "../services/firebase";
+
 class Comment extends Component {
   state = {
-    id: this.props.id,
-    data: {},
-    commentText: "",
-    userId: null
+    commentId: "",
+    isEdit: false,
+    value: ""
   };
 
-  componentDidMount() {
-    const PATH = `${this.props.commentTo}/${this.state.id}/comments`;
-    const cookieUserId = getUserIdFromCookie();
-    firebase
-      .database()
-      .ref(PATH)
-      .on("value", snapshot => {
-        this.setState({ data: snapshot.val(), userId: cookieUserId });
-      });
-  }
-
-  handleCommentText = e => {
-    this.setState({ commentText: e.target.value });
-  };
-
-  handleAddComment = e => {
-    e.preventDefault();
-    let user = firebase.auth().currentUser;
-    const peopleId = this.state.id + "/";
-    const commentId = +new Date();
-    const postText = this.state.commentText;
-    const authorName = user.displayName;
-
-    const setData = {
-      authorName: authorName,
-      authorUID: user.uid,
-      text: postText
-    };
-    const URL = `${this.props.commentTo}/${peopleId}comments/${commentId}`;
-    this.setState({ commentText: "" });
-    writeCommentsData(URL, setData);
-  };
-  handleDeleteComment = key => {
-    const URL = `${this.props.commentTo}/${this.props.id}/comments/${key}`;
-    console.log("key = ", key, "URL = ", URL);
+  handleDeleteComment = commentId => {
+    const { commentTo, contentId } = this.props;
+    const URL = `${commentTo}/${contentId}/comments/${commentId}`;
     deleteData(URL);
   };
 
+  handleEditComment = (commentId, text) => {
+    this.setState({
+      commentId: commentId,
+      isEdit: true,
+      value: text
+    });
+    console.log("commentId", commentId);
+  };
+  handleCommentText = e => {
+    this.setState({ value: e.target.value });
+  };
+  handleEditAccept = e => {
+    e.preventDefault();
+    const { commentTo, contentId } = this.props;
+    const { value, commentId } = this.state;
+    const URL = `${commentTo}/${contentId}/comments/${commentId}`;
+    console.log("URL", URL);
+    const data = {
+      text: value
+    };
+    editData(URL, data);
+    this.setState({ isEdit: false });
+  };
+  handleEditCancel = e => {
+    e.preventDefault();
+    this.setState({ isEdit: false });
+  };
   render() {
-    const { data } = this.state;
-    const dataKeys = data ? Object.keys(data) : [];
+    const { data, commentId, userId } = this.props;
+    const { isEdit, value } = this.state;
+    console.log("data", data, "commentId", commentId, "userId", userId);
     return (
-      <div className="container w-50">
-        <form>
-          <div className="form-group">
-            <label htmlFor="textarea">Your comment</label>
-            <textarea
-              className="form-control"
-              id="textarea"
-              rows="3"
-              value={this.state.commentText}
-              onChange={this.handleCommentText}
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={this.handleAddComment}
-          >
-            Add comment
-          </button>
-        </form>
-        <div className="w-100 m-3">
-          {dataKeys.map(key => {
-            return (
-              <React.Fragment key={key}>
-                <div className="d-flex justify-content-between">
-                  <blockquote className="blockquote">
-                    <p className="mb-0">{data[key].text}</p>
-                    <footer className="blockquote-footer">
-                      Written by {data[key].authorName} on the{" "}
-                      <cite title="Source Title">{dateFromTime(key)}</cite>
-                    </footer>
-                  </blockquote>
-
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    disabled={!(this.state.userId == data[key].authorUID)}
-                    onClick={() => this.handleDeleteComment(key)}
-                  >
-                    Delete
-                  </button>
-                </div>
-                <hr />
-              </React.Fragment>
-            );
-          })}
-        </div>
-      </div>
+      <React.Fragment>
+        {!isEdit ? (
+          <CommentFill
+            data={data}
+            commentId={commentId}
+            userId={userId}
+            onClickDelete={() => this.handleDeleteComment(commentId)}
+            onClickEdit={() =>
+              this.handleEditComment(commentId, data[commentId].text)
+            }
+          />
+        ) : (
+          <CommentEdit
+            onChange={this.handleCommentText}
+            commentText={value}
+            onClickAccept={this.handleEditAccept}
+            onClickCancel={this.handleEditCancel}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

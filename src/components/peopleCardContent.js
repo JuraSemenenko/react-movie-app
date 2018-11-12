@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Comment from "./comment";
+import Comments from "./comments";
 import Like from "../components/common/like";
 import { addToFavorites } from "../services/firebase";
 import firebase from "firebase";
@@ -88,26 +88,9 @@ class MovieCardContent extends Component {
               </table>
               <p>{data.biography}</p>
             </div>
-            {/* <div className="container">
-              <div className="row">
-                <div className="col-md-4">
-                  {console.log(this.state)}
-                  {videos.results.map(video => (
-                    <iframe
-                      hey={video.id}
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${video.id}`}
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                    />
-                  ))}
-                </div>
-              </div> </div>*/}
           </div>
         </div>
-        <Comment id={peopleId} commentTo={"people"} />
+        <Comments id={peopleId} commentTo={"people"} />
       </React.Fragment>
     );
   }
